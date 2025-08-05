@@ -200,9 +200,8 @@ impl Client {
             'outer: for peers in hbb_common::config::LanPeers::load().peers {
                 for (ip, mac) in peers.ip_mac.iter() {
                     if *ip == peer.to_string() {
-                        if let Ok(mac_addr) = mac.parse() {
+                        if !mac.is_empty() {
                             LocalConfig::set_ip_mac(peer.to_string(), mac.to_string());
-                            allow_err!(mac_addr);
                         }
                         break 'outer;
                     }
