@@ -200,16 +200,16 @@ impl Client {
             'outer: for peers in hbb_common::config::LanPeers::load().peers {
                 for (ip, mac) in peers.ip_mac.iter() {
                     if *ip == peer.to_string() {
-                        if let Ok(mac_addr) = mac {
+                        if let Ok(mac_addr) = mac.parse() {
                             LocalConfig::set_ip_mac(peer.to_string(), mac.to_string());
+                            break 'outer;
                         }
-                        break 'outer;
                     }
                 }
             }
             let interfaces = default_net::get_interfaces();
-            let wmac = LocalConfig::get_ip_mac(peer);
-            if let Ok(mac_addr) = wmac.parse() {
+            let mac = LocalConfig::get_ip_mac(peer);
+            if let Ok(mac_addr) = mac.parse() {
                 for interface in &interfaces {
                     for ipv4 in &interface.ipv4 {
                         // remove below mask check to avoid unexpected bug
