@@ -197,6 +197,7 @@ impl Client {
     )> {
         // Register mac for local use of wol
         if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
+            let interfaces = default_net::get_interfaces();
             'outer: for peers in hbb_common::config::LanPeers::load().peers {
                 for (ip, mac) in peers.ip_mac.iter() {
                     if *ip == peer.to_string() {
@@ -207,15 +208,14 @@ impl Client {
                     }
                 }
             }
-            let interfaces = default_net::get_interfaces();
             let wmac = LocalConfig::get_ip_mac(peer);
-            if let Ok(wakemac) = wmac.parse() {
+            if let Ok(mac_addr) = wmac.parse() {
                 for interface in &interfaces {
                     for ipv4 in &interface.ipv4 {
                         // remove below mask check to avoid unexpected bug
                         // if (u32::from(ipv4.addr) & u32::from(ipv4.netmask)) == (u32::from(peer_ip) & u32::from(ipv4.netmask))
-                        log::info!("Send wol to {wakemac} of {}", ipv4.addr);
-                        allow_err!(wol::send_wol(wakemac, None, Some(std::net::IpAddr::V4(ipv4.addr))));
+                        log::info!("Send wol to {mac_addr} of {}", ipv4.addr);
+                        allow_err!(wol::send_wol(mac_addr, None, Some(std::net::IpAddr::V4(ipv4.addr))));
                     }
                 }
             }
