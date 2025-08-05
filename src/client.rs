@@ -202,7 +202,7 @@ impl Client {
                     if *ip == peer.to_string() {
                         if let Ok(mac_addr) = mac.parse() {
                             LocalConfig::set_ip_mac(peer.to_string(), mac.to_string());
-                            allow_err!;
+                            allow_err!(self);
                         }
                         break 'outer;
                     }
