@@ -261,6 +261,7 @@ fn wait_response(
                             };
 
                             if local_mac.is_empty() && p.mac.is_empty() || local_mac != p.mac {
+                                hbb_common::config::LocalConfig::set_ip_mac(addr.ip().to_string(), p.mac.clone()); // Set discovered mac list for local wol
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
                                     ip_mac: HashMap::from([
