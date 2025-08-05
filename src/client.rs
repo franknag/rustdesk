@@ -197,17 +197,17 @@ impl Client {
     )> {
         // Register mac for local use of wol
         if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
-            let interfaces = default_net::get_interfaces();
             'outer: for peers in hbb_common::config::LanPeers::load().peers {
                 for (ip, mac) in peers.ip_mac.iter() {
                     if *ip == peer.to_string() {
-                        if let Ok(mac_addr) = mac.parse() {
+                        if let Ok(mac_addr) = mac {
                             LocalConfig::set_ip_mac(peer.to_string(), mac.to_string());
                         }
                         break 'outer;
                     }
                 }
             }
+            let interfaces = default_net::get_interfaces();
             let wmac = LocalConfig::get_ip_mac(peer);
             if let Ok(mac_addr) = wmac.parse() {
                 for interface in &interfaces {
