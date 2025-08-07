@@ -264,7 +264,7 @@ fn wait_response(
                                 if !hbb_common::config::PeerConfig::exists(addr.ip().to_string()) { // Add direct connection peer
                                     hbb_common::config::PeerConfig::store(hbb_common::config::PeerConfig.default(), addr.ip().to_string());
                                 }
-                                hbb_common::config::PeerConfig::set_mac(p.mac.clone()); // Set discovered mac for WOL
+                                hbb_common::config::PeerConfig::set_mac(addr.ip().to_string(), p.mac.clone()); // Set discovered mac for WOL
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
                                     ip_mac: HashMap::from([
