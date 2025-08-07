@@ -262,7 +262,7 @@ fn wait_response(
 
                             if local_mac.is_empty() && p.mac.is_empty() || local_mac != p.mac {
                                 if !hbb_common::config::PeerConfig::exists(&addr.ip().to_string()) { // Custom code for auto create peer mac address wol
-                                    hbb_common::config::PeerConfig::store(hbb_common::config::PeerConfig::default(), &addr.ip().to_string());
+                                    hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig::default(), &addr.ip().to_string());
                                 }
                                 hbb_common::config::PeerConfig::set_mac(addr.ip().to_string(), p.mac.clone()); // Custom code for peer mac addr
                                 allow_err!(tx.send(config::DiscoveryPeer {
