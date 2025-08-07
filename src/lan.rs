@@ -261,7 +261,10 @@ fn wait_response(
                             };
 
                             if local_mac.is_empty() && p.mac.is_empty() || local_mac != p.mac {
-                                hbb_common::config::LocalConfig::set_ip_mac(addr.ip().to_string(), p.mac.clone()); // Set discovered mac list for local wol
+                                if !hbb_common::config::PeerConfig::exists(addr.ip().to_string()) { // Add direct connection peer
+                                    hbb_common::config::PeerConfig::store(addr.ip().to_string());
+                                }
+                                hbb_common::config::PeerConfig::set_mac(p.mac.clone()); // Set discovered mac for WOL
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
                                     ip_mac: HashMap::from([
