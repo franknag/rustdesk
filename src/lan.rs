@@ -262,15 +262,15 @@ fn wait_response(
 
                             if local_mac.is_empty() && p.mac.is_empty() || local_mac != p.mac {
                                 if hbb_common::config::PeerConfig::exists(&addr.ip().to_string()) { // Custom code for auto create peer mac address wol
-                                    let mut config = hbb_common::config::PeerConfig::load(&addr.ip());
+                                    let mut pconfig = hbb_common::config::PeerConfig::load(&addr.ip().to_string());
                                 } else {
-                                    let mut config = hbb_common::config::PeerConfig::default();
-                                    config.info.username = p.username.clone();
-                                    config.info.hostname = p.hostname.clone();
-                                    config.info.platform = p.platform.clone();
+                                    let mut pconfig = hbb_common::config::PeerConfig::default();
+                                    pconfig.info.username = p.username.clone();
+                                    pconfig.info.hostname = p.hostname.clone();
+                                    pconfig.info.platform = p.platform.clone();
                                 }
-                                config.mac = p.mac.clone();
-                                hbb_common::config::PeerConfig::store(&config, &addr.ip().to_string()); // Custom code for peer mac addr
+                                pconfig.mac = p.mac.clone();
+                                hbb_common::config::PeerConfig::store(&pconfig, &addr.ip().to_string()); // Custom code for peer mac addr
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
                                     ip_mac: HashMap::from([
