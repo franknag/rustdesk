@@ -195,7 +195,7 @@ impl Client {
         (Stream, bool, Option<Vec<u8>>, Option<KcpStream>),
         (i32, String),
     )> {
-        // Send wol automatic
+        // Custom code Send for automatic wol
         if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
             let mac = PeerConfig::get_mac(peer.to_string());
             if let Ok(mac_addr) = mac.parse() {
@@ -2377,7 +2377,6 @@ impl LoginConfigHandler {
             username: pi.username.clone(),
             hostname: pi.hostname.clone(),
             platform: pi.platform.clone(),
-            mac: pi.platform.clone(), // Custom Line for wol mac address
         };
         let mut config = self.load_config();
         config.info = serde;
