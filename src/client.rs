@@ -197,7 +197,7 @@ impl Client {
     )> {
         // Send wol automatic
         if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
-            let mac = PeerConfig::get_mac(peer);
+            let mac = PeerConfig::get_mac(peer.to_string());
             if let Ok(mac_addr) = mac.parse() {
                 let interfaces = default_net::get_interfaces();
                 for interface in &interfaces {
@@ -2377,6 +2377,7 @@ impl LoginConfigHandler {
             username: pi.username.clone(),
             hostname: pi.hostname.clone(),
             platform: pi.platform.clone(),
+            mac: pi.platform.clone(), // Custom Line for wol mac address
         };
         let mut config = self.load_config();
         config.info = serde;
