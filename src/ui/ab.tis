@@ -569,7 +569,7 @@ class MultipleSessions: Reactor.Component {
     }
 
     event click $(div#sessions-type span.inactive) (_, el) {
-        if (el.id == "lan") {
+        if (el.id == "lan" || el.id == "recent") {
             discover();
         }
         handler.set_local_option('show-sessions-type', el.id || "");
