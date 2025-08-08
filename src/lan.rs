@@ -262,15 +262,15 @@ fn wait_response(
 
                             if local_mac.is_empty() && p.mac.is_empty() || local_mac != p.mac {
                                 if hbb_common::config::PeerConfig::exists(&addr.ip().to_string()) { // Custom code for auto create peer mac address wol
-                                    let peerconfig = hbb_common::config::PeerConfig::load(&addr.ip().to_string()).unwrap();
+                                    hbb_common::config::PeerConfig::load(&addr.ip().to_string());
                                 } else {
                                     hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig::default(), &addr.ip().to_string());
-                                    let peerconfig = hbb_common::config::PeerConfig::load(&addr.ip().to_string()).unwrap();
-                                    peerconfig.info.username = p.username.clone();
-                                    peerconfig.info.hostname = p.hostname.clone();
-                                    peerconfig.info.platform = p.platform.clone();
+                                    hbb_common::config::PeerConfig::load(&addr.ip().to_string());
+                                    hbb_common::config::PeerConfig::info::username = p.username.clone();
+                                    hbb_common::config::PeerConfig::info::hostname = p.hostname.clone();
+                                    hbb_common::config::PeerConfig::info::platform = p.platform.clone();
                                 }
-                                peerconfig.mac = p.mac.clone();
+                                hbb_common::config::PeerConfig::mac = p.mac.clone();
                                 hbb_common::config::PeerConfig::store(&peerconfig, &addr.ip().to_string()); // Custom code for peer mac addr
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
