@@ -197,8 +197,8 @@ impl Client {
     )> {
         // Custom code Send for automatic wol
         if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
-            let mac = PeerConfig::get_mac(peer.to_string());
-            if let Ok(mac_addr) = mac.parse() {
+            let pconfig = PeerConfig::load(&peer.to_string()).clone();
+            if let Ok(mac_addr) = pconfig.mac.parse() {
                 let interfaces = default_net::get_interfaces();
                 for interface in &interfaces {
                     for ipv4 in &interface.ipv4 {
