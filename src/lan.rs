@@ -264,7 +264,7 @@ fn wait_response(
                                 if hbb_common::config::PeerConfig::exists(&addr.ip().to_string()) { // Custom code for auto create peer mac address wol
                                     let pconfig = hbb_common::config::PeerConfig::load(&addr.ip().to_string()).clone();
                                 } else {
-                                    hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig::default(), &addr.ip().to_string())
+                                    hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig::default(), &addr.ip().to_string());
                                     let pconfig = hbb_common::config::PeerConfig::load(&addr.ip().to_string()).clone();
                                     pconfig.info.username = p.username.clone();
                                     pconfig.info.hostname = p.hostname.clone();
