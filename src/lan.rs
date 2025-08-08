@@ -266,12 +266,12 @@ fn wait_response(
                                 } else {
                                     hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig::default(), &addr.ip().to_string());
                                     hbb_common::config::PeerConfig::load(&addr.ip().to_string());
-                                    hbb_common::config::PeerConfig::info::username = p.username.clone();
-                                    hbb_common::config::PeerConfig::info::hostname = p.hostname.clone();
-                                    hbb_common::config::PeerConfig::info::platform = p.platform.clone();
+                                    hbb_common::config::PeerConfig.info.username = p.username.clone();
+                                    hbb_common::config::PeerConfig.info.hostname = p.hostname.clone();
+                                    hbb_common::config::PeerConfig.info.platform = p.platform.clone();
                                 }
-                                hbb_common::config::PeerConfig::mac = p.mac.clone();
-                                hbb_common::config::PeerConfig::store(&peerconfig, &addr.ip().to_string()); // Custom code for peer mac addr
+                                hbb_common::config::PeerConfig.mac = p.mac.clone();
+                                hbb_common::config::PeerConfig::store(&hbb_common::config::PeerConfig, &addr.ip().to_string()); // Custom code for peer mac addr
                                 allow_err!(tx.send(config::DiscoveryPeer {
                                     id: p.id.clone(),
                                     ip_mac: HashMap::from([
