@@ -201,6 +201,19 @@ impl Client {
         ),
         (i32, String),
     )> {
+        // Custom code Send for automatic wol
+        if let Ok(peerip) = std::net::IpAddr::from_str(peer) {
+            let pconfig = PeerConfig::load(&peer.to_string()).clone();
+            if let Ok(mac_addr) = pconfig.mac.parse() {
+                let interfaces = default_net::get_interfaces();
+                for interface in &interfaces {
+                    for ipv4 in &interface.ipv4 {
+                        log::info!("Send wol to {mac_addr} of {}", ipv4.addr);
+                        allow_err!(wol::send_wol(mac_addr, None, Some(std::net::IpAddr::V4(ipv4.addr))));
+                    }
+                }
+            }
+        }
         debug_assert!(peer == interface.get_id());
         interface.update_direct(None);
         interface.update_received(false);
